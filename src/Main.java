@@ -30,11 +30,11 @@ public class Main {
             Files.createFile(contactFilePath);
         }
 
-
+            System.out.println("Would you like to find a number or enter a new number? Find/New");
         do {
             String confirm = sc.nextLine().toUpperCase();
-            System.out.println("Would you like to find a number or enter a new number? Find/New");
             if (confirm.contains("New")) {
+                getContact();
                 String topLine = "Name | Phone Number \n -----------------------";
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
             }
@@ -43,24 +43,35 @@ public class Main {
                 String line = getContact();
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
             }
-            while (true) ;
-
             //begin terminal interactive
+            } while (true) ;
+    }
 
-            public static String getContact () {
-                System.out.print("Enter A Name: ");
-                String contactName = sc.next();
-                System.out.print("Enter A Phone Number: ");
-                String contactNumber = sc.next();
-                String[] splitNumber;
-                splitNumber = contactNumber.split("");
-                contactNumber.contains("0123456789");
-                System.out.println(splitNumber);
-                return contactName + " | " + contactNumber + "\n";
-            }
+    public static String getContact() {
+        System.out.print("Enter A Name: ");
+        String contactName = sc.next();
+        System.out.print("Enter A Phone Number: ");
+        String contactNumber = sc.next();
+        String[] splitNumber;
+        splitNumber = contactNumber.split("");
+        contactNumber.contains("0123456789");
+        System.out.println(splitNumber);
+        return contactName + " | " + contactNumber + "\n";
+    }
 
 
-        }
+
+
+
+
+
+
+
+
+
+
+
+}
 
 
 
