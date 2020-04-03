@@ -30,21 +30,29 @@ public class Main {
             Files.createFile(contactFilePath);
         }
 
-            System.out.println("Would you like to find a number or enter a new number? Find/New");
+        boolean userConfirm = true;
         do {
-            String confirm = sc.nextLine().toUpperCase();
-            if (confirm.contains("New")) {
-                getContact();
+            System.out.println("Would you like to find a number or enter a new number? Find/New");
+            String confirm = sc.next().toUpperCase();
+            System.out.println(confirm);
+            if (confirm.contains("NEW")) {
+                String line = getContact();
                 String topLine = "Name | Phone Number \n -----------------------";
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
-            }
-            if (confirm.contains("New")) {
-
-                String line = getContact();
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
             }
+//            if (confirm.contains("Find")) {
+//
+//            }
             //begin terminal interactive
-            } while (true) ;
+
+            System.out.println("Do you wish to continue? [y/n]");
+
+            String userResponse = sc.next().toLowerCase();
+            if (!userResponse.equalsIgnoreCase("y")) {
+                userConfirm = false;
+            }
+        } while (userConfirm);
     }
 
     public static String getContact() {
