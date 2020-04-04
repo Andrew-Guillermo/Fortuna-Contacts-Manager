@@ -1,22 +1,79 @@
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
-    List<String> ContactList = new ArrayList<>();
+    public static List<String> ContactList = new ArrayList<>();
     public static String datapath = "data";
     public static String contactFileName = "contacts.txt";
     public static Scanner sc = new Scanner(System.in);
+    public static String name;
+    public static String phoneNumber;
+
+    public void Contacts(String name, String phoneNumber){
+        Main.name = name;
+        Main.phoneNumber = phoneNumber;
+    }
+
+    public static String getName(){
+        return name;
+    }
+
+    public String getPhoneNumber(){
+        return phoneNumber;
+    }
+
+    public static String storeContact() {
+        System.out.print("Enter First Name: ");
+        String contactFirstName = sc.next();
+        System.out.print("Enter Last Name: ");
+        String contactLastName = sc.next();
+        //enter if statement to check if name exists
+//        if(contactFirstName == findContact()){
+//
+//        }
+        System.out.print("Enter A Phone Number: ");
+        String contactNumber = sc.next();
+        String[] splitNumber;
+        splitNumber = contactNumber.split("");
+        if(contactNumber.contains("0123456789")) {
+            System.out.println(splitNumber);
+        }
+        System.out.println(contactFirstName +" " + contactLastName + " | " + contactNumber);
+        return contactFirstName +" " + contactLastName + " | " + contactNumber;
+
+    }
+
+
+
+    //find contact position
+
+    public static int findContact(String contactName){
+        System.out.println("contact index: "+ContactList.indexOf(contactName));
+        ContactList.indexOf(contactName);
+        for (int i = 0; i < ContactList.size(); i++){
+            String contacts = ContactList.get(i);
+            if(contacts.equals(contactName)){
+                System.out.println(i);
+                return i;
+            }
+        }
+        return 1;
+    }
+
+    private static void removeContact(String nan) {
+        System.out.println("Enter name of contact you want to delete: ");
+        String contactName = sc.next();
+        int findName = findContact(contactName);
+        System.out.println("PSV You entered: " + findName );
+
+    }
+
+
 
 
     public static void main(String[] args) throws IOException {
@@ -36,7 +93,7 @@ public class Main {
             String confirm = sc.next().toUpperCase();
 //            System.out.println(confirm);
             if (confirm.contains("NEW")) {
-                String line = getContact();
+                String line = storeContact();
                 String topLine = "\t\tName | Phone Number \n -----------------------";
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
@@ -53,7 +110,9 @@ public class Main {
                 String nameFromList = sc.next().toUpperCase();
                 // nameFromList needs to iterate through the contacts and return contact info.
             } else if (confirm.contains("DELETE")) {
-                removeContact();
+                removeContact(name);
+                System.out.println("Main: You entered: " + name );
+
             }
 //            begin terminal interactive
 
@@ -65,26 +124,9 @@ public class Main {
         } while (userConfirm);
     }
 
-    public static String getContact() {
-        System.out.print("Enter First Name: ");
-        String contactFirstName = sc.next();
-        System.out.print("Enter Last Name: ");
-        String contactLastName = sc.next();
-        System.out.print("Enter A Phone Number: ");
-        String contactNumber = sc.next();
-//        String[] splitNumber;
-//        splitNumber = contactNumber.split("");
-        contactNumber.contains("0123456789");
-//        System.out.println(splitNumber);
-        return contactFirstName +" " + contactLastName + " | " + contactNumber ;
-    }
 
-    public static void removeContact() {
-        System.out.println("Enter name of contact you want to delete: ");
-        String name = sc.next();
 
-        System.out.println("You entered: " + name);
-    }
+
 
 
 
