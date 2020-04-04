@@ -52,6 +52,8 @@ public class Main {
                 System.out.println("Please Enter a Name From The List: ");
                 String nameFromList = sc.next().toUpperCase();
                 // nameFromList needs to iterate through the contacts and return contact info.
+            } else if (confirm.contains("DELETE")) {
+                removeContact();
             }
 //            begin terminal interactive
 
@@ -77,14 +79,12 @@ public class Main {
         return contactFirstName +" " + contactLastName + " | " + contactNumber ;
     }
 
+    public static void removeContact() {
+        System.out.println("Enter name of contact you want to delete: ");
+        String name = sc.next();
 
-
-
-
-
-
-
-
+        System.out.println("You entered: " + name);
+    }
 
 
 
