@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,25 +7,27 @@ import java.util.*;
 
 public class Main {
 
-    public static List<String> ContactList = new ArrayList<>();
     public static String datapath = "data";
     public static String contactFileName = "contacts.txt";
     public static Scanner sc = new Scanner(System.in);
     public static String name;
     public static String phoneNumber;
+    public static ArrayList<String> ContactList = new ArrayList<String>();
 
-    public void Contacts(String name, String phoneNumber){
-        Main.name = name;
-        Main.phoneNumber = phoneNumber;
-    }
 
-    public static String getName(){
-        return name;
-    }
 
-    public String getPhoneNumber(){
-        return phoneNumber;
-    }
+//    public void Contacts(String name, String phoneNumber){
+//        Main.name = name;
+//        Main.phoneNumber = phoneNumber;
+//    }
+//
+//    public static String getName(){
+//        return name;
+//    }
+//
+//    public String getPhoneNumber(){
+//        return phoneNumber;
+//    }
 
     public static String storeContact() {
         System.out.print("Enter First Name: ");
@@ -49,11 +51,11 @@ public class Main {
     }
 
 
-
     //find contact position
 
     public static int findContact(String contactName){
-        System.out.println("contact index: "+ContactList.indexOf(contactName));
+        System.out.println("You entered: " + contactName);
+        System.out.println("contact index: " + ContactList.indexOf(contactName));
         ContactList.indexOf(contactName);
         for (int i = 0; i < ContactList.size(); i++){
             String contacts = ContactList.get(i);
@@ -95,7 +97,10 @@ public class Main {
             if (confirm.contains("NEW")) {
                 String line = storeContact();
                 String topLine = "\t\tName | Phone Number \n -----------------------";
+
+//                Contacts.add(contact);
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
+
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
             }if (confirm.contains("FIND")) {
 
@@ -108,14 +113,13 @@ public class Main {
                 }
                 System.out.println("Please Enter a Name From The List: ");
                 String nameFromList = sc.next().toUpperCase();
+
                 // nameFromList needs to iterate through the contacts and return contact info.
             } else if (confirm.contains("DELETE")) {
                 removeContact(name);
                 System.out.println("Main: You entered: " + name );
 
             }
-//            begin terminal interactive
-
             System.out.println("Do you wish to continue? [y/n]");
             String userResponse = sc.next().toLowerCase();
             if (!userResponse.equalsIgnoreCase("y")) {
