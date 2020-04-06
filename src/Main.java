@@ -30,14 +30,15 @@ public class Main {
         String contactNumber = sc.next();
         String[] splitNumber;
         splitNumber = contactNumber.split("");
-        if(contactNumber.contains("0123456789")) {
+        if (contactNumber.contains("0123456789")) {
             System.out.println(splitNumber);
 
         }
         String number = contactNumber.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+        String formattedNumber = String.format("%-10s %-13s| %-18s", contactFirstName, contactLastName, number);
 
-        System.out.println(contactFirstName +" " + contactLastName + " | " + number);
-        return contactFirstName +" " + contactLastName + " | " + number;
+        System.out.println(formattedNumber);
+        return formattedNumber;
     }
 
 
@@ -52,7 +53,7 @@ public class Main {
 //        Path contactFilePath = Paths.get(datapath, contactFileName);
         List<String> lines = Files.readAllLines(dataFile);
         List<String> newList = new ArrayList<>();
-        for(String line : lines) {
+        for (String line : lines) {
             contactUpperCase = line.toUpperCase();
             if (contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
                 int indexContact = lines.indexOf(line);
@@ -62,10 +63,10 @@ public class Main {
             newList.add(line);
         }
         Files.write(dataFile, lines);
-        }
+    }
 
 
-    public static void searchByName() throws IOException{
+    public static void searchByName() throws IOException {
         System.out.println("Enter a first name");
         String firstName = sc.next();
         //assign what user enters to new String in uppercase letters.  Will be used to compare first name in contacts.txt file
@@ -73,10 +74,10 @@ public class Main {
         //declare string which will store uppercase version of contacts in contacts.txt file - will be used to compare with first name that user enters.
         String contactUpperCase;
         List<String> readList = Files.readAllLines(dataFile);
-        for(String contact : readList) {
+        for (String contact : readList) {
             contactUpperCase = contact.toUpperCase();
 
-            if(contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
+            if (contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
                 System.out.println("\n");
                 System.out.println(contact);
                 break;
@@ -92,8 +93,6 @@ public class Main {
         String line = storeContact();
         Files.write(dataFile, Arrays.asList(line), StandardOpenOption.APPEND);
     }
-
-
 
 
     public static void main(String[] args) throws IOException {
@@ -114,14 +113,15 @@ public class Main {
 //            System.out.println(confirm);
             if (confirm.contains("NEW")) {
                 String line = storeContact();
-                String topLine = "\t\tName | Phone Number \n -----------------------";
+                String topLine = "\t\tName              | Phone Number \n ---------------------------------------------------";
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
-            }if (confirm.contains("ALL")) {
+            }
+            if (confirm.contains("ALL")) {
                 // readList needs to only print name or not exist at all...
                 List<String> readList = Files.readAllLines(dataFile);
                 //for loop iterates and prints all contacts
-                for (var i = 0; i < readList.size();i++) {
+                for (var i = 0; i < readList.size(); i++) {
                     System.out.println("\n" + readList.get(i));
                 }
                 // nameFromList needs to iterate through the contacts and return contact info.
@@ -132,7 +132,6 @@ public class Main {
                 searchByName();
             } else if (confirm.contains("EDIT")) {
                 editContact();
-
             }
             System.out.println("Do you wish to continue? [y/n]");
             String userResponse = sc.next().toLowerCase();
@@ -141,5 +140,4 @@ public class Main {
             }
         } while (userConfirm);
     }
-
 }
