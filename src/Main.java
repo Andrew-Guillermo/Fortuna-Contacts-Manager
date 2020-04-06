@@ -113,7 +113,7 @@ public class Main {
 //            System.out.println(confirm);
             if (confirm.contains("NEW")) {
                 String line = storeContact();
-                String topLine = "\t\tName            | Phone Number \n ---------------------------------------------------";
+                String topLine = "\t\tName            | Phone Number \n --------------------------------------------";
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
             }
@@ -122,7 +122,7 @@ public class Main {
                 List<String> readList = Files.readAllLines(dataFile);
                 //for loop iterates and prints all contacts
                 for (var i = 0; i < readList.size(); i++) {
-                    System.out.println("\n" + readList.get(i));
+                    System.out.println( readList.get(i));
                 }
                 // nameFromList needs to iterate through the contacts and return contact info.
             } else if (confirm.contains("DELETE")) {
