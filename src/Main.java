@@ -9,25 +9,13 @@ public class Main {
 
     public static String datapath = "data";
     public static String contactFileName = "contacts.txt";
+    public static Path dataDirectory = Paths.get(datapath);
+    public static Path dataFile = Paths.get(datapath, contactFileName);
     public static Scanner sc = new Scanner(System.in);
     public static String name;
     public static String phoneNumber;
     public static ArrayList<String> ContactList = new ArrayList<String>();
 
-
-
-//    public void Contacts(String name, String phoneNumber){
-//        Main.name = name;
-//        Main.phoneNumber = phoneNumber;
-//    }
-//
-//    public static String getName(){
-//        return name;
-//    }
-//
-//    public String getPhoneNumber(){
-//        return phoneNumber;
-//    }
 
     public static String storeContact() {
         System.out.print("Enter First Name: ");
@@ -47,74 +35,44 @@ public class Main {
         }
         System.out.println(contactFirstName +" " + contactLastName + " | " + contactNumber);
         return contactFirstName +" " + contactLastName + " | " + contactNumber;
-
     }
 
-
-    //find contact position
-
-    public static int findContact(String contactName){
-        System.out.println("You entered: " + contactName);
-        System.out.println("contact index: " + ContactList.indexOf(contactName));
-        ContactList.indexOf(contactName);
-        for (int i = 0; i < ContactList.size(); i++){
-            String contacts = ContactList.get(i);
-            if(contacts.equals(contactName)){
-                System.out.println(i);
-                return i;
-            }
-        }
-        return 1;
-    }
 
     private static void removeContact(String nan) throws IOException {
-//        System.out.println("Enter name of contact you want to delete: ");
-//        String contactName = sc.next();
-//        int findName = findContact(contactName);
-//        System.out.println("PSV You entered: " + findName );
-
         System.out.println("Enter a first name");
         String firstName = sc.next();
-
+        System.out.println("You Deleted: " + firstName);
         //assign what user enters to new String in uppercase letters.  Will be used to compare first name in contacts.txt file
         String firstNameUpperCase = firstName.toUpperCase();
-
         //declare string which will store uppercase version of contacts in contacts.txt file - will be used to compare with first name that user enters.
         String contactUpperCase;
-
-        Path contactFilePath = Paths.get(datapath, contactFileName);
-        List<String> readList = Files.readAllLines(contactFilePath);
+//        Path contactFilePath = Paths.get(datapath, contactFileName);
+        List<String> lines = Files.readAllLines(dataFile);
         List<String> newList = new ArrayList<>();
-
-        for(String contact : readList) {
-            contactUpperCase = contact.toUpperCase();
+        for(String line : lines) {
+            contactUpperCase = line.toUpperCase();
             if (contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
-                newList.add("");
-                continue;
+                int indexContact = lines.indexOf(line);
+                lines.remove(indexContact);
+                break;
             }
-            newList.add(readList);
+            newList.add(line);
+        }
+        Files.write(dataFile, lines);
         }
 
-        Files.write(datapath, newList);
-        System.out.println();
-        }
-
-    }
 
     public static void searchByName() throws IOException{
         System.out.println("Enter a first name");
         String firstName = sc.next();
-
         //assign what user enters to new String in uppercase letters.  Will be used to compare first name in contacts.txt file
         String firstNameUpperCase = firstName.toUpperCase();
-
         //declare string which will store uppercase version of contacts in contacts.txt file - will be used to compare with first name that user enters.
         String contactUpperCase;
-
-        Path contactFilePath = Paths.get(datapath, contactFileName);
-        List<String> readList = Files.readAllLines(contactFilePath);
+        List<String> readList = Files.readAllLines(dataFile);
         for(String contact : readList) {
             contactUpperCase = contact.toUpperCase();
+
             if(contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
                 System.out.println("\n");
                 System.out.println(contact);
@@ -124,7 +82,6 @@ public class Main {
             }
         }
     }
-
 
     public static void main(String[] args) throws IOException {
         Path data = Paths.get(datapath);
@@ -139,34 +96,27 @@ public class Main {
 
         boolean userConfirm = true;
         do {
-            System.out.println("Would you like to: \nFind a number: FIND\nEnter a new number: NEW\nOr delete a number: DELETE\nPlease Enter, Find: New: Delete");
+            System.out.println("Would you like to:\nShow All Contacts \nSearch a number: SEARCH\nEnter a new number: NEW\nOr delete a number: DELETE\nPlease Enter, All: Search: New: Delete");
             String confirm = sc.next().toUpperCase();
 //            System.out.println(confirm);
             if (confirm.contains("NEW")) {
                 String line = storeContact();
                 String topLine = "\t\tName | Phone Number \n -----------------------";
-
 //                Contacts.add(contact);
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
 
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
-            }if (confirm.contains("FIND")) {
-
+            }if (confirm.contains("ALL")) {
                 // readList needs to only print name or not exist at all...
-                List<String> readList = Files.readAllLines(contactFilePath);
-
+                List<String> readList = Files.readAllLines(dataFile);
                 //for loop iterates and prints all contacts
                 for (var i = 0; i < readList.size();i++) {
                     System.out.println("\n" + readList.get(i));
                 }
-                System.out.println("Please Enter a Name From The List: ");
-                String nameFromList = sc.next().toUpperCase();
-
                 // nameFromList needs to iterate through the contacts and return contact info.
             } else if (confirm.contains("DELETE")) {
                 removeContact(name);
-                searchByName();
-                System.out.println("Main: You entered: " + name );
+//                searchByName();
 
             } else if (confirm.contains("SEARCH")) {
                 searchByName();
