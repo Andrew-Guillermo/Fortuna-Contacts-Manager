@@ -83,6 +83,37 @@ public class Main {
         }
     }
 
+    public static void editContact() throws IOException {
+        System.out.println("Enter a first name");
+        String firstName = sc.next();
+        String firstNameUpperCase = firstName.toUpperCase();
+        String contactUpperCase;
+
+//        Path contactFilePath = Paths.get(datapath, contactFileName);
+        List<String> lines = Files.readAllLines(dataFile);
+        List<String> newList = new ArrayList<>();
+        for(String line : lines) {
+            contactUpperCase = line.toUpperCase();
+            if (contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
+                int indexContact = lines.indexOf(line);
+//                System.out.println(indexContact);
+                System.out.println("It seems you wish to edit the following: \n" + lines.get(indexContact)); //prints out element at specified index.
+                System.out.println("Is this the contact you wish to edit? [y/n] ");
+
+                String userResponse = sc.next().toLowerCase();
+                if (userResponse.equalsIgnoreCase("y")) {
+                    System.out.println("Go ahead and re-enter the first name of that contact you wish to edit: ");
+                    removeContact(name);
+                    System.out.println("Go ahead and follow the prompts below to enter the edited contact information: ");
+                    storeContact();
+                }
+                break;
+            }
+            newList.add(line);
+        }
+        Files.write(dataFile, lines);
+    }
+
     public static void main(String[] args) throws IOException {
         Path data = Paths.get(datapath);
         if (!Files.exists(data)) {
@@ -96,7 +127,7 @@ public class Main {
 
         boolean userConfirm = true;
         do {
-            System.out.println("Would you like to:\nShow All Contacts \nSearch a number: SEARCH\nEnter a new number: NEW\nOr delete a number: DELETE\nPlease Enter, All: Search: New: Delete");
+            System.out.println("Would you like to:\nShow All Contacts \nSearch a number: SEARCH\nEnter a new number: NEW\nEdit an existing contact: EDIT\nOr delete a number: DELETE\nPlease Enter, All: Search: New: Edit: Delete");
             String confirm = sc.next().toUpperCase();
 //            System.out.println(confirm);
             if (confirm.contains("NEW")) {
@@ -117,9 +148,10 @@ public class Main {
             } else if (confirm.contains("DELETE")) {
                 removeContact(name);
 //                searchByName();
-
             } else if (confirm.contains("SEARCH")) {
                 searchByName();
+            } else if (confirm.contains("EDIT")) {
+                editContact();
             }
             System.out.println("Do you wish to continue? [y/n]");
             String userResponse = sc.next().toLowerCase();
@@ -128,6 +160,5 @@ public class Main {
             }
         } while (userConfirm);
     }
-
 
 }
