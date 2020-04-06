@@ -32,9 +32,12 @@ public class Main {
         splitNumber = contactNumber.split("");
         if(contactNumber.contains("0123456789")) {
             System.out.println(splitNumber);
+
         }
-        System.out.println(contactFirstName +" " + contactLastName + " | " + contactNumber);
-        return contactFirstName +" " + contactLastName + " | " + contactNumber;
+        String number = contactNumber.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+
+        System.out.println(contactFirstName +" " + contactLastName + " | " + number);
+        return contactFirstName +" " + contactLastName + " | " + number;
     }
 
 
@@ -84,35 +87,14 @@ public class Main {
     }
 
     public static void editContact() throws IOException {
-        System.out.println("Enter a first name");
-        String firstName = sc.next();
-        String firstNameUpperCase = firstName.toUpperCase();
-        String contactUpperCase;
-
-//        Path contactFilePath = Paths.get(datapath, contactFileName);
-        List<String> lines = Files.readAllLines(dataFile);
-        List<String> newList = new ArrayList<>();
-        for(String line : lines) {
-            contactUpperCase = line.toUpperCase();
-            if (contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
-                int indexContact = lines.indexOf(line);
-//                System.out.println(indexContact);
-                System.out.println("It seems you wish to edit the following: \n" + lines.get(indexContact)); //prints out element at specified index.
-                System.out.println("Is this the contact you wish to edit? [y/n] ");
-
-                String userResponse = sc.next().toLowerCase();
-                if (userResponse.equalsIgnoreCase("y")) {
-                    System.out.println("Go ahead and re-enter the first name of that contact you wish to edit: ");
-                    removeContact(name);
-                    System.out.println("Go ahead and follow the prompts below to enter the edited contact information: ");
-                    storeContact();
-                }
-                break;
-            }
-            newList.add(line);
-        }
-        Files.write(dataFile, lines);
+        removeContact(name);
+        System.out.println("Enter The Updated Contact Information: ");
+        String line = storeContact();
+        Files.write(dataFile, Arrays.asList(line), StandardOpenOption.APPEND);
     }
+
+
+
 
     public static void main(String[] args) throws IOException {
         Path data = Paths.get(datapath);
@@ -133,9 +115,7 @@ public class Main {
             if (confirm.contains("NEW")) {
                 String line = storeContact();
                 String topLine = "\t\tName | Phone Number \n -----------------------";
-//                Contacts.add(contact);
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
-
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
             }if (confirm.contains("ALL")) {
                 // readList needs to only print name or not exist at all...
@@ -152,6 +132,7 @@ public class Main {
                 searchByName();
             } else if (confirm.contains("EDIT")) {
                 editContact();
+
             }
             System.out.println("Do you wish to continue? [y/n]");
             String userResponse = sc.next().toLowerCase();
