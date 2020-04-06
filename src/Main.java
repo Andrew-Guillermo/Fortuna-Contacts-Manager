@@ -67,15 +67,63 @@ public class Main {
         return 1;
     }
 
-    private static void removeContact(String nan) {
-        System.out.println("Enter name of contact you want to delete: ");
-        String contactName = sc.next();
-        int findName = findContact(contactName);
-        System.out.println("PSV You entered: " + findName );
+    private static void removeContact(String nan) throws IOException {
+//        System.out.println("Enter name of contact you want to delete: ");
+//        String contactName = sc.next();
+//        int findName = findContact(contactName);
+//        System.out.println("PSV You entered: " + findName );
+
+        System.out.println("Enter a first name");
+        String firstName = sc.next();
+
+        //assign what user enters to new String in uppercase letters.  Will be used to compare first name in contacts.txt file
+        String firstNameUpperCase = firstName.toUpperCase();
+
+        //declare string which will store uppercase version of contacts in contacts.txt file - will be used to compare with first name that user enters.
+        String contactUpperCase;
+
+        Path contactFilePath = Paths.get(datapath, contactFileName);
+        List<String> readList = Files.readAllLines(contactFilePath);
+        List<String> newList = new ArrayList<>();
+
+        for(String contact : readList) {
+            contactUpperCase = contact.toUpperCase();
+            if (contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
+                newList.add("");
+                continue;
+            }
+            newList.add(readList);
+        }
+
+        Files.write(datapath, newList);
+        System.out.println();
+        }
 
     }
 
+    public static void searchByName() throws IOException{
+        System.out.println("Enter a first name");
+        String firstName = sc.next();
 
+        //assign what user enters to new String in uppercase letters.  Will be used to compare first name in contacts.txt file
+        String firstNameUpperCase = firstName.toUpperCase();
+
+        //declare string which will store uppercase version of contacts in contacts.txt file - will be used to compare with first name that user enters.
+        String contactUpperCase;
+
+        Path contactFilePath = Paths.get(datapath, contactFileName);
+        List<String> readList = Files.readAllLines(contactFilePath);
+        for(String contact : readList) {
+            contactUpperCase = contact.toUpperCase();
+            if(contactUpperCase.contains(firstNameUpperCase)) { //compares if first name entered by user is found in contacts.txt file.
+                System.out.println("\n");
+                System.out.println(contact);
+                break;
+            } else {
+                continue;
+            }
+        }
+    }
 
 
     public static void main(String[] args) throws IOException {
@@ -117,8 +165,11 @@ public class Main {
                 // nameFromList needs to iterate through the contacts and return contact info.
             } else if (confirm.contains("DELETE")) {
                 removeContact(name);
+                searchByName();
                 System.out.println("Main: You entered: " + name );
 
+            } else if (confirm.contains("SEARCH")) {
+                searchByName();
             }
             System.out.println("Do you wish to continue? [y/n]");
             String userResponse = sc.next().toLowerCase();
@@ -129,15 +180,4 @@ public class Main {
     }
 
 
-
-
-
-
-
-
 }
-
-
-
-
-
