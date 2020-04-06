@@ -35,7 +35,7 @@ public class Main {
 
         }
         String number = contactNumber.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
-        String formattedNumber = String.format("%-10s %-13s| %-18s", contactFirstName, contactLastName, number);
+        String formattedNumber = String.format("%-10s %-13s| %-18s|", contactFirstName, contactLastName, number);
 
         System.out.println(formattedNumber);
         return formattedNumber;
@@ -113,7 +113,7 @@ public class Main {
 //            System.out.println(confirm);
             if (confirm.contains("NEW")) {
                 String line = storeContact();
-                String topLine = "\t\tName              | Phone Number \n ---------------------------------------------------";
+                String topLine = "\t\tName            | Phone Number \n ---------------------------------------------------";
                 Files.write(contactFilePath, Arrays.asList(topLine), StandardOpenOption.CREATE);
                 Files.write(contactFilePath, Arrays.asList(line), StandardOpenOption.APPEND);
             }
